@@ -1,103 +1,238 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { Navigation } from "@/components/Navgation";
+import { StatCard } from "@/components/StatCard";
+import { Button } from "@/components/ui/button";
+import {
+  Calendar,
+  Syringe,
+  Activity,
+  Globe,
+  ArrowRight,
+  Database,
+  TrendingUp,
+} from "lucide-react";
+import Link from "next/link";
+import heroImage from "@/assets/hero-health.jpg";
+import { useHealthData } from "@/hooks/useHealthData";
+
+const Index = () => {
+  const { infections, stats, loading } = useHealthData();
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000000000) return `${(num / 1000000000).toFixed(1)}B+`;
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M+`;
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}K+`;
+    return num.toString();
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-background">
+      <Navigation />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Hero Section */}
+      <section className="relative overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${heroImage})` }}>
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/80" />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+        <div className="relative container mx-auto px-4 py-24 md:py-32">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full mb-6">
+              <Database className="h-4 w-4" />
+              <span className="text-sm font-medium">Powered by WHO Data</span>
+            </div>
+
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Global Vaccination & Disease Insights
+            </h1>
+
+            <p className="text-xl text-white/90 mb-8 max-w-2xl">
+              Access comprehensive WHO health data to combat misinformation,
+              support research, and drive evidence-based public health decisions
+              worldwide.
+            </p>
+
+            <div className="flex flex-wrap gap-4">
+              <Button size="lg" variant="secondary" asChild className="group">
+                <Link href="#statistics">
+                  Explore Data
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="bg-white/10 border-white text-white hover:bg-white hover:text-primary"
+                asChild>
+                <Link href="/about">Learn More</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Topics Covered */}
+      <section className="py-16 bg-accent/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">What We Cover</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Comprehensive data spanning multiple dimensions of global health
+              and vaccination programs
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="text-center p-6 bg-card rounded-lg border hover:shadow-lg transition-shadow">
+              <div className="inline-flex p-4 bg-primary/10 rounded-full mb-4">
+                <Syringe className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="font-semibold mb-2">Vaccination Coverage</h3>
+              <p className="text-sm text-muted-foreground">
+                Global immunization rates and trends
+              </p>
+            </div>
+
+            <div className="text-center p-6 bg-card rounded-lg border hover:shadow-lg transition-shadow">
+              <div className="inline-flex p-4 bg-secondary/10 rounded-full mb-4">
+                <Activity className="h-8 w-8 text-secondary" />
+              </div>
+              <h3 className="font-semibold mb-2">Disease Surveillance</h3>
+              <p className="text-sm text-muted-foreground">
+                Tracking preventable diseases
+              </p>
+            </div>
+
+            <div className="text-center p-6 bg-card rounded-lg border hover:shadow-lg transition-shadow">
+              <div className="inline-flex p-4 bg-primary/10 rounded-full mb-4">
+                <Globe className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="font-semibold mb-2">Regional Analysis</h3>
+              <p className="text-sm text-muted-foreground">
+                Data across all WHO regions
+              </p>
+            </div>
+
+            <div className="text-center p-6 bg-card rounded-lg border hover:shadow-lg transition-shadow">
+              <div className="inline-flex p-4 bg-secondary/10 rounded-full mb-4">
+                <TrendingUp className="h-8 w-8 text-secondary" />
+              </div>
+              <h3 className="font-semibold mb-2">Historical Trends</h3>
+              <p className="text-sm text-muted-foreground">
+                Multi-year trend analysis
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Key Statistics */}
+      <section id="statistics" className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Data at a Glance</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Key insights from the WHO global health database
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <StatCard
+              icon={Calendar}
+              label="Time Period Coverage"
+              value={loading ? "Loading..." : stats.yearRange}
+              description="24 years of comprehensive health data"
+              gradient
+            />
+
+            <StatCard
+              icon={Syringe}
+              label="Vaccine Doses Administered"
+              value={loading ? "Loading..." : formatNumber(stats.totalDoses)}
+              description="Global vaccination programs tracked"
+            />
+
+            <StatCard
+              icon={Activity}
+              label="Preventable Disease Cases"
+              value={loading ? "Loading..." : formatNumber(stats.totalCases)}
+              description="Documented cases worldwide"
+            />
+
+            <StatCard
+              icon={Globe}
+              label="Diseases Tracked"
+              value={loading ? "Loading..." : stats.diseasesCount.toString()}
+              description="Including measles, rubella, and pertussis"
+            />
+          </div>
+
+          {/* Disease List */}
+          <div className="mt-12 bg-card border rounded-lg p-8">
+            <h3 className="text-xl font-semibold mb-6 text-center">
+              Diseases Covered in Our Database
+            </h3>
+            {loading ? (
+              <p className="text-center text-muted-foreground">
+                Loading diseases...
+              </p>
+            ) : (
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                {infections.map((infection) => (
+                  <div
+                    key={infection.id}
+                    className="flex items-center gap-2 p-3 bg-accent/50 rounded-lg hover:bg-accent transition-colors">
+                    <div className="w-2 h-2 bg-primary rounded-full" />
+                    <span className="text-sm font-medium">
+                      {infection.description}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-gradient-to-br from-primary to-primary/80">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Ready to Explore?
+          </h2>
+          <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
+            Learn more about our mission, user personas, and the team behind
+            this initiative
+          </p>
+          <Button size="lg" variant="secondary" asChild>
+            <Link href="/about">
+              Visit Our About Page
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Activity className="h-5 w-5 text-primary" />
+              <span className="font-semibold">WHO Health Data Platform</span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Data sourced from World Health Organization (WHO) • Milestone 1
+              Project
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
   );
-}
+};
+
+export default Index;
