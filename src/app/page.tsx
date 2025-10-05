@@ -13,8 +13,12 @@ import {
   TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
-import heroImage from "@/assets/hero-health.jpg";
+import Image from "next/image";
+import heroImage from "../assets/hero-health.jpg";
 import { useHealthData } from "@/hooks/useHealthData";
+import VaccinationRates from "@/components/VaccinationRates";
+import InfectionData from "@/components/InfectionData";
+import DeepDiveAnalytics from "@/components/DeepDiveAnalytics";
 
 const Index = () => {
   const { infections, stats, loading } = useHealthData();
@@ -32,9 +36,14 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroImage})` }}>
+        <div className="absolute inset-0">
+          <Image
+            src={heroImage}
+            alt="Global health and vaccination background"
+            fill
+            className="object-cover"
+            priority
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/80" />
         </div>
 
@@ -194,6 +203,38 @@ const Index = () => {
               </div>
             )}
           </div>
+          <main className="container mx-auto p-2  lg:p-8">
+            <h1 className="text-4xl font-extrabold mb-10">
+              Global Health Dashboard
+            </h1>
+
+            <section className="mb-16">
+              <h2 className="text-3xl font-bold border-b pb-2 mb-6">
+                Vaccination Analysis
+              </h2>
+              {/* You can pass props to filter the data */}
+              <VaccinationRates year="2024" antigen="DTPCV3" />
+            </section>
+
+            <section>
+              <h2 className="text-3xl font-bold border-b pb-2 mb-6">
+                Infection Analysis
+              </h2>
+              {/* Example: Show Pertussis (PER) data for Lower Middle Income countries ('3') */}
+              <InfectionData
+                economicPhaseId="3"
+                infectionType="PER"
+                year="2024"
+              />
+            </section>
+            <section className="pt-4 lg:pt-8">
+              <h1 className="text-4xl font-extrabold mb-10 border-b pb-4">
+                Deep-Dive Data Analysis
+              </h1>
+              {/* Example: Show Pertussis (PER) data for Lower Middle Income countries ('3') */}
+              <DeepDiveAnalytics />
+            </section>
+          </main>
         </div>
       </section>
 
