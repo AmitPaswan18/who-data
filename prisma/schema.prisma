@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Models based on your who.db.sql file
+
+model Antigen {
+  AntigenID String @id // The primary key for this table
+  name      String
+}
+
+model Country {
+  CountryID         String              @id
+  name              String
+  region            String
+  economy           Int
+  CountryPopulation CountryPopulation[] // Relation to many population records
+  InfectionData     InfectionData[]     // Relation to many infection records
+  Vaccination       Vaccination[]       // Relation to many vaccination records
+}
+
+model CountryPopulation {
+  id         Int     @id @default(autoincrement()) // Added a unique ID for Prisma
+  countryId  String  @map("country") // Maps this field to the 'country' column
+  year       Int
+  population Int
+  country    Country @relation(fields: [countryId], references: [CountryID])
+
+  @@unique([countryId, year]) // Ensures each country/year combo is unique
+}
+
+model Economy {
+  id    Int    @id // 'id' is the primary key as per your SQL file
+  phase String
+}
+
+model Infection_Type {
+  id            String          @id
+  description   String
+  InfectionData InfectionData[] // Relation to many infection records
+}
+
+model InfectionData {
+  id        Int            @id @default(autoincrement())
+  inf_type  String
+  countryId String         @map("country")
+  year      Int
+  cases     Int
+  country   Country        @relation(fields: [countryId], references: [CountryID])
+  infType   Infection_Type @relation(fields: [inf_type], references: [id])
+}
+
+model Vaccination {
+  id         Int     @id @default(autoincrement())
+  inf_type   String
+  antigen    String
+  countryId  String  @map("country")
+  year       Int
+  target_num Int
+  doses      Int
+  coverage   Float   // REAL in SQL maps to Float in Prisma
+  country    Country @relation(fields: [countryId], references: [CountryID])
+}

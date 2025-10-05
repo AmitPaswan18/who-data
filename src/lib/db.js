@@ -1,7 +1,3 @@
-import Database from "better-sqlite3";
+import { sql } from "@vercel/postgres";
 
-export const db = new Database("who.db", { readonly: true });
-
-export function closeDb() {
-  db.close();
-}
+export { sql };
