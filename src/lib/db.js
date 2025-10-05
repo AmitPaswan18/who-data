@@ -1,3 +1,2 @@
-import { sql } from "@vercel/postgres";
-
-export { sql };
+import Database from "better-sqlite3";
+export const db = new Database("who.db", { readonly: true });
